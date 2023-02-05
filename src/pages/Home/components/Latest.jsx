@@ -13,17 +13,17 @@ function Latest() {
         {Array(3)
           .fill(0)
           .map((_, i) => (
-            <div className="p-8 border-2 border-slate-800 border-b-4 rounded-lg flex flex-col h-full">
+            <div className="p-8 border-2 border-zinc-800 border-b-4 rounded-lg flex flex-col h-full">
               <div className="relative">
-                <div className="w-full h-full rounded-md bg-slate-800 absolute top-2 left-2"></div>
+                <div className="w-full h-full rounded-md bg-zinc-800 absolute top-2 left-2"></div>
                 <img
                   className="h-full w-full aspect-video object-cover relative rounded-md"
                   src={`https://picsum.photos/1200/900?random=${Math.random()}`}
                 />
               </div>
               <div className="mt-6 flex flex-col h-full">
-                <div className="text-slate-400">
-                  <span className="text-slate-800 uppercase">
+                <div className="text-zinc-400">
+                  <span className="text-zinc-800 uppercase">
                     {faker.helpers.arrayElement([
                       "Travelling",
                       "Life",
@@ -37,17 +37,19 @@ function Latest() {
                 <h2 className="text-3xl font-medium mt-2">
                   {faker.lorem.sentence(5)}
                 </h2>
-                <p className="mt-4 text-slate-400 desc">
+                <p className="mt-4 text-zinc-400 desc">
                   {faker.lorem.paragraph(2)}
                 </p>
-                <div className="flex items-end flex-grow">
-                  <button className="border-2 w-min whitespace-nowrap border-b-4 border-slate-800 px-6 py-3 mt-8 rounded-xl font-medium flex items-center">
-                    Read More
-                    <Icon
-                      icon="uil:arrow-right"
-                      className="w-6 h-6 ml-2 flex-shrink-0"
+                <div className="flex items-end flex-grow mt-4">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={`https://i.pravatar.cc/300#${Math.random()}`}
+                      className="w-8 h-8 rounded-full"
                     />
-                  </button>
+                    <span className="text-zinc-800 font-medium">
+                      {faker.name.firstName()} {faker.name.lastName()}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

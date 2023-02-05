@@ -5,6 +5,7 @@ import { firestore } from "../../firebase";
 import { Icon } from "@iconify/react";
 import moment from "moment/moment";
 import { Link } from "react-router-dom";
+import { faker } from "@faker-js/faker";
 
 function Posts() {
   const [value, loading, error] = useCollection(collection(firestore, "posts"));
@@ -20,35 +21,37 @@ function Posts() {
         return (
           <div
             key={item.id}
-            className="p-8 border-2 border-slate-800 border-b-4 rounded-lg flex gap-8 h-96"
+            className="p-8 border-2 border-zinc-800 border-b-4 rounded-lg flex gap-8 h-96"
           >
             <div className="relative h-full aspect-square">
-              <div className="w-full h-full rounded-md bg-slate-800 absolute top-2 left-2"></div>
+              <div className="w-full h-full rounded-md bg-zinc-800 absolute top-2 left-2"></div>
               <img
                 className="h-full w-full aspect-video object-cover relative rounded-md"
                 src={data.thumbnail}
               />
             </div>
             <div className="mt-6 flex flex-col">
-              <div className="text-slate-400">
-                <span className="text-slate-800 uppercase">
+              <div className="text-zinc-400">
+                <span className="text-zinc-800 uppercase">
                   {data.category}
                   &nbsp;&nbsp;·&nbsp;&nbsp;
                 </span>{" "}
                 {moment(data.date.seconds * 1000).format("MMM DD, YYYY")}
               </div>
               <h2 className="text-3xl font-medium mt-2">{data.title}</h2>
-              <p className="mt-4 text-slate-400 desc">{data.abstract}</p>
+              <p className="mt-4 text-zinc-400 desc">{data.abstract}</p>
               <div className="flex items-end flex-grow justify-between">
-                <Link to={`/post/${item.id}`}>
-                  <button className="border-2 w-min whitespace-nowrap border-b-4 border-slate-800 px-6 py-3 mt-8 rounded-xl font-medium flex items-center">
-                    Read More
-                    <Icon
-                      icon="uil:arrow-right"
-                      className="w-6 h-6 ml-2 flex-shrink-0"
+                <div className="flex items-end flex-grow mt-4">
+                  <div className="flex items-center gap-2">
+                    <img
+                      src={`https://i.pravatar.cc/300#${Math.random()}`}
+                      className="w-8 h-8 rounded-full"
                     />
-                  </button>
-                </Link>
+                    <span className="text-zinc-800 font-medium">
+                      {faker.name.firstName()} {faker.name.lastName()}
+                    </span>
+                  </div>
+                </div>
                 <p className="flex items-center">
                   <Icon icon="uil:eye" className="w-6 h-6 mr-2 flex-shrink-0" />
                   {data.view} views

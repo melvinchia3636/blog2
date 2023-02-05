@@ -1,10 +1,11 @@
 import React from "react";
 import { Icon } from "@iconify/react";
+import { faker } from "@faker-js/faker";
 
 function Highlights() {
   return (
-    <section className="grid grid-cols-3 p-8 mt-24 border-2 border-slate-800 border-b-4 rounded-lg relative">
-      <div className="text-slate-50 bg-slate-800 absolute right-0 top-0 rounded-bl-md p-2 px-3 font-medium text-sm uppercase tracking-wider flex items-center gap-1.5">
+    <section className="grid grid-cols-3 p-8 mt-24 border-2 border-zinc-800 border-b-4 rounded-lg relative">
+      <div className="text-zinc-50 bg-zinc-800 absolute right-0 top-0 rounded-bl-md p-2 px-3 font-medium text-sm uppercase tracking-wider flex items-center gap-1.5">
         <Icon icon="ic:round-star" className="w-5 h-5 -mt-0.5" />
         Today's Highlight
       </div>
@@ -16,8 +17,8 @@ function Highlights() {
         />
       </div>
       <div className="col-span-2 p-8">
-        <div className="text-slate-400">
-          <span className="text-slate-800 uppercase">
+        <div className="text-zinc-400">
+          <span className="text-zinc-800 uppercase">
             Travelling&nbsp;&nbsp;·&nbsp;&nbsp;
           </span>{" "}
           Jan 26, 2023
@@ -25,7 +26,7 @@ function Highlights() {
         <h2 className="text-3xl font-medium mt-2">
           Chia's Family Trip to Singapore
         </h2>
-        <p className="mt-4 text-slate-400">
+        <p className="mt-4 text-zinc-400">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
           minim veniam, quis nostrud exercitation ullamco laboris nisi ut
@@ -33,10 +34,14 @@ function Highlights() {
           reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
           pariatur.
         </p>
-        <button className="border-2 border-b-4 border-slate-800 px-6 py-3 mt-8 rounded-xl font-medium flex items-center">
-          Read More
-          <Icon icon="uil:arrow-right" className="w-6 h-6 ml-2" />
-        </button>
+        <div className="flex items-end flex-grow mt-4">
+          <div className="flex items-center gap-2">
+            <img src={faker.image.avatar()} className="w-8 h-8 rounded-full" />
+            <span className="text-zinc-800 font-medium">
+              {faker.name.firstName()} {faker.name.lastName()}
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );

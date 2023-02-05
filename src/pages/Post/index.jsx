@@ -21,14 +21,14 @@ function Post() {
         }}
         className="w-full h-96 bg-no-repeat bg-cover bg-center bg-black/30 bg-blend-multiply rounded-xl flex flex-col justify-end gap-2 text-lg p-8"
       >
-        <div className="text-slate-50">
-          <span className="text-slate-50 uppercase">
+        <div className="text-zinc-50">
+          <span className="text-zinc-50 uppercase">
             {value.data().category}
             &nbsp;&nbsp;·&nbsp;&nbsp;
           </span>{" "}
           {moment(value.data().date.seconds * 1000).format("MMM DD, YYYY")}
         </div>
-        <h1 className="text-5xl font-medium text-slate-50">
+        <h1 className="text-5xl font-medium text-zinc-50">
           {value.data().title}
         </h1>
       </div>
