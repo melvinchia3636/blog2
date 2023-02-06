@@ -1,17 +1,17 @@
-import { doc } from "firebase/firestore";
-import moment from "moment";
-import React from "react";
-import { useDocument } from "react-firebase-hooks/firestore";
-import { useParams } from "react-router";
-import { firestore } from "../../firebase";
+import { doc } from 'firebase/firestore';
+import moment from 'moment';
+import React from 'react';
+import { useDocument } from 'react-firebase-hooks/firestore';
+import { useParams } from 'react-router';
+import { firestore } from '../../firebase';
 
 function Post() {
   const { id } = useParams();
-  const [value, loading, error] = useDocument(doc(firestore, "posts", id));
+  const [value, loading] = useDocument(doc(firestore, 'posts', id));
 
   return loading ? (
     <div className="flex justify-center items-center flex-1">
-      <span class="loader"></span>
+      <span className="loader" />
     </div>
   ) : (
     <div className="mt-20 flex flex-col gap-8 mb-12">
@@ -25,8 +25,9 @@ function Post() {
           <span className="text-zinc-50 uppercase">
             {value.data().category}
             &nbsp;&nbsp;·&nbsp;&nbsp;
-          </span>{" "}
-          {moment(value.data().date.seconds * 1000).format("MMM DD, YYYY")}
+          </span>
+          &nbsp;
+          {moment(value.data().date.seconds * 1000).format('MMM DD, YYYY')}
         </div>
         <h1 className="text-5xl font-medium text-zinc-50">
           {value.data().title}
