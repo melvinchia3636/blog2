@@ -1,17 +1,17 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable import/no-cycle */
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-underscore-dangle */
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import 'pattern.css';
 import { Route, Routes } from 'react-router';
 import { onAuthStateChanged } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, onSnapshot } from 'firebase/firestore';
 import { Helmet } from 'react-helmet';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Posts from './pages/Posts';
-import Post from './pages/Post';
 import Login from './pages/Auth/Login';
 import { auth, firestore } from './firebase';
 import Signup from './pages/Auth/Signup';
@@ -20,20 +20,28 @@ import Profile from './pages/Auth/Profile';
 export const appContext = createContext({
   user: null,
   userData: {},
+  userDataRef: {},
 });
 
 function App() {
   const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState({});
+  const [userData, _setUserData] = useState({});
+  const userDataRef = useRef(userData);
+
+  const setUserData = (data) => {
+    userDataRef.current = data;
+    _setUserData(data);
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, async (_user) => {
       if (_user) {
         const docRef = doc(firestore, 'users', _user.uid);
-        const _userData = await getDoc(docRef);
+        onSnapshot(docRef, (_doc) => {
+          setUserData(_doc.data());
+        });
 
         setUser(_user);
-        setUserData(_userData.data());
       } else {
         setUser(null);
       }
@@ -41,7 +49,7 @@ function App() {
   }, []);
 
   return (
-    <appContext.Provider value={{ user, userData }}>
+    <appContext.Provider value={{ user, userData, userDataRef }}>
       <main className="w-full min-h-screen bg-zinc-50 text-zinc-800 pt-16 px-32 flex flex-col">
         <Helmet>
           <title>My Life Journey</title>
@@ -51,7 +59,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<Posts />} />
-            <Route path="/post/:id" element={<Post />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Signup />} />
             <Route path="/profile" element={<Profile />} />

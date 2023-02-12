@@ -1,9 +1,11 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable import/no-cycle */
 import { Menu, Transition } from '@headlessui/react';
 import { Icon } from '@iconify/react';
 import React, { Fragment, useContext } from 'react';
 import ReactJdenticon from 'react-jdenticon';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { appContext } from '../App';
 import { auth } from '../firebase';
@@ -100,7 +102,11 @@ export default function Navbar() {
                   {({ active }) => (
                     <button
                       type="button"
-                      onClick={() => auth.signOut()}
+                      onClick={() =>
+                        auth.signOut().then(() => {
+                          useNavigate().push('/login');
+                        })
+                      }
                       className={`${
                         active ? 'bg-zinc-800 text-zinc-50' : 'text-gray-900'
                       } group flex w-full items-center rounded-sm p-4 gap-2 transition-all`}
