@@ -21,11 +21,14 @@ export const appContext = createContext({
   user: null,
   userData: {},
   userDataRef: {},
+  updateAvatar: Math.random(),
+  setUpdateAvatar: () => {},
 });
 
 function App() {
   const [user, setUser] = useState(null);
   const [userData, _setUserData] = useState({});
+  const [updateAvatar, setUpdateAvatar] = useState(Math.random());
   const userDataRef = useRef(userData);
 
   const setUserData = (data) => {
@@ -49,13 +52,15 @@ function App() {
   }, []);
 
   return (
-    <appContext.Provider value={{ user, userData, userDataRef }}>
-      <main className="w-full min-h-screen bg-zinc-50 text-zinc-800 pt-16 px-32 flex flex-col">
+    <appContext.Provider
+      value={{ user, userData, userDataRef, updateAvatar, setUpdateAvatar }}
+    >
+      <main className="w-full min-h-screen bg-zinc-50 text-zinc-800 flex flex-col relative">
         <Helmet>
           <title>My Life Journey</title>
         </Helmet>
         <Navbar />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col mt-20 px-32">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/posts" element={<Posts />} />

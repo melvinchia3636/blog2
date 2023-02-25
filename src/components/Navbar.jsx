@@ -3,7 +3,7 @@
 /* eslint-disable import/no-cycle */
 import { Menu, Transition } from '@headlessui/react';
 import { Icon } from '@iconify/react';
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import ReactJdenticon from 'react-jdenticon';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -12,10 +12,27 @@ import { auth } from '../firebase';
 
 export default function Navbar() {
   const location = useLocation();
-  const { user, userData } = useContext(appContext);
+  const { user, userData, updateAvatar } = useContext(appContext);
+  const [isScroll, setIsScroll] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScroll(true);
+      } else {
+        setIsScroll(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+  }, []);
 
   return (
-    <nav className="flex items-center">
+    <nav
+      className={`flex items-center fixed w-full bg-zinc-50 z-[9999] transition-all border-b-2 ${
+        isScroll ? 'pt-6 border-zinc-800' : 'pt-16 border-zinc-50'
+      } pb-6 px-32`}
+    >
       <Link to="/">
         <h1 className="text-2xl font-medium tracking-wide">
           My Life
@@ -54,7 +71,7 @@ export default function Navbar() {
             <Menu.Button className="flex items-center gap-4">
               {userData.avatar ? (
                 <img
-                  src={userData.avatar}
+                  src={`${userData.avatar}#${updateAvatar}`}
                   alt=""
                   referrerPolicy="no-referrer"
                   className="w-8 h-8 rounded-full flex-shrink-0"
