@@ -1,10 +1,70 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable react/jsx-one-expression-per-line */
 import { faker } from '@faker-js/faker';
 import { Icon } from '@iconify/react';
 import moment from 'moment';
-import React from 'react';
+import React, { useContext } from 'react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { useNavigate } from 'react-router';
+import { appContext } from '../../../App';
+import { firestore } from '../../../firebase';
 
 function PostCard({ item }) {
   const data = item.data();
+  const { user } = useContext(appContext);
+  const navigate = useNavigate();
+
+  function updateLike() {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const post = doc(firestore, 'posts', item.id);
+    if (data.like.includes(user.uid)) {
+      updateDoc(post, {
+        like: data.like.filter((id) => id !== user.uid),
+      });
+      return;
+    }
+
+    if (data.dislike.includes(user.uid)) {
+      updateDoc(post, {
+        dislike: data.dislike.filter((id) => id !== user.uid),
+      });
+    }
+
+    updateDoc(post, {
+      like: [...data.like, user.uid],
+    });
+  }
+
+  function updateDislike() {
+    if (!user) {
+      navigate('/login');
+      return;
+    }
+
+    const post = doc(firestore, 'posts', item.id);
+
+    if (data.dislike.includes(user.uid)) {
+      updateDoc(post, {
+        dislike: data.dislike.filter((id) => id !== user.uid),
+      });
+      return;
+    }
+
+    if (data.like.includes(user.uid)) {
+      updateDoc(post, {
+        like: data.like.filter((id) => id !== user.uid),
+      });
+    }
+
+    updateDoc(post, {
+      dislike: [...data.dislike, user.uid],
+    });
+  }
+
   return (
     <div
       key={item.id}
@@ -43,19 +103,29 @@ function PostCard({ item }) {
             </div>
           </div>
           <div className="flex gap-8">
-            <button type="button" className="flex items-center">
+            <button
+              onClick={updateLike}
+              type="button"
+              className="flex items-center"
+            >
               <Icon
                 icon="uil:thumbs-up"
                 className="w-6 h-6 mr-2 flex-shrink-0"
               />
-              Like
+              Like{' '}
+              <span className="text-zinc-400 ml-2">{data.like.length}</span>
             </button>
-            <button type="button" className="flex items-center">
+            <button
+              onClick={updateDislike}
+              type="button"
+              className="flex items-center"
+            >
               <Icon
                 icon="uil:thumbs-down"
                 className="w-6 h-6 mr-2 flex-shrink-0"
               />
-              Dislike
+              Dislike{' '}
+              <span className="text-zinc-400 ml-2">{data.dislike.length}</span>
             </button>
           </div>
         </div>
