@@ -74,7 +74,7 @@ export default function Navbar() {
                   src={`${userData.avatar}#${updateAvatar}`}
                   alt=""
                   referrerPolicy="no-referrer"
-                  className="w-8 h-8 rounded-full flex-shrink-0"
+                  className="w-8 h-8 rounded-full flex-shrink-0 border-2 border-zinc-800"
                 />
               ) : (
                 <ReactJdenticon size="32" value={user.userName} />

@@ -46,6 +46,7 @@ function Profile() {
       storage,
       `banners/${user.uid}.${file.name.split('.').pop()}`,
     );
+
     uploadBytes(storageRef, file).then((snapshot) => {
       const userRef = doc(firestore, 'users', user.uid);
       updateDoc(userRef, {
@@ -81,6 +82,7 @@ function Profile() {
       storage,
       `avatars/${user.uid}.${file.name.split('.').pop()}`,
     );
+
     uploadBytes(storageRef, file).then((snapshot) => {
       const userRef = doc(firestore, 'users', user.uid);
       updateDoc(userRef, {
@@ -100,7 +102,7 @@ function Profile() {
         <title>Profile | My Life Journey</title>
       </Helmet>
       <div
-        className="w-full h-96 bg-black rounded-xl bg-cover relative"
+        className="w-full h-96 bg-black rounded-xl bg-cover relative border-2 border-zinc-800"
         style={{
           backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/blog-a44d5.appspot.com/o/${encodeURIComponent(
             userData?.banner,
@@ -128,7 +130,7 @@ function Profile() {
               )
             }
             alt="avatar"
-            className="w-40 h-40 rounded-full object-cover"
+            className="w-40 h-40 rounded-full object-cover border-2 border-zinc-800"
           />
           <button
             type="button"

@@ -18,6 +18,9 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   useEffect(() => {
     if (user) {
       navigate('/profile');
@@ -25,13 +28,37 @@ function Login() {
   }, [user]);
 
   const signIn = () => {
+    if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+      setEmailError('Please enter a valid email');
+      throw new Error('Please enter a valid email');
+    }
+
+    if (!password) {
+      setPasswordError('Please enter a password');
+      throw new Error('Please enter a password');
+    }
+
     auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => {
-        console.log(err);
+        if (err.code === 'auth/invalid-email') {
+          setEmailError('Please enter a valid email');
+        }
+
+        if (err.code === 'auth/operation-not-allowed') {
+          setEmailError('Email already in use');
+        }
+
+        if (err.code === 'auth/user-not-found') {
+          setEmailError('User not found');
+        }
+
+        if (err.code === 'auth/wrong-password') {
+          setPasswordError('Wrong email or password');
+        }
       });
   };
 
@@ -49,6 +76,8 @@ function Login() {
           setValue={setEmail}
           icon="envelope"
           type="email"
+          error={emailError}
+          setError={setEmailError}
         />
         <InputBox
           placeholder="Password"
@@ -56,6 +85,8 @@ function Login() {
           setValue={setPassword}
           icon="lock"
           type="password"
+          error={passwordError}
+          setError={setPasswordError}
         />
         <SubmitButton onSubmit={signIn} />
         <OrContinueWith />
